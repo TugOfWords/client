@@ -14,6 +14,7 @@ We will be using [yarn](https://yarnpkg.com/en/) rather than npm for dependency 
 `yarn remove <dependency_name>`
 #### Best Practices
 - Please follow the guidelines suggested [here](https://github.com/wearehive/project-guidelines)
+- If you are interested in reading more about react, [here](https://github.com/markerikson/react-redux-links/blob/master/react-architecture.md) is a good compilation of resources
 ### Testing
 - To run tests:
 `yarn test`
