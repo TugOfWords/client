@@ -7,14 +7,16 @@
     "precommit-hook-eslint": "^3.0.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-scripts": "1.1.0"
+    "react-scripts": "1.1.0",
+    "semantic-ui-react": "^0.77.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "lint": "eslint . --ext .js",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "validate": "npm ls"
   },
   "devDependencies": {
     "eslint": "^4.16.0",
