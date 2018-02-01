@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "eslint-plugin-react": "^7.4.0",
+    "firebase": "^4.9.0",
     "precommit-hook-eslint": "^3.0.0",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",

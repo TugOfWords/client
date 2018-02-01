@@ -32,7 +32,7 @@ TextInput.defaultProps = {
   type: 'text',
   hasError: false,
   errorHeader: 'Error',
-  errorMessage: 'Invalid input provided.',
+  errorMessage: 'Invalid input provided',
   onChange: () => null,
 };
 
