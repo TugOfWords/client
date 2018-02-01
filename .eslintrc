@@ -5,7 +5,8 @@
   "extends": "airbnb",
   "parser": "babel-eslint",
   "rules": {
-    "no-console": 0,
-    "jsx-filename-extension": 0
+    "no-console": "off",
+    "jsx-filename-extension": "off",
+    "prefer-default-export": "off"
   }
 }
