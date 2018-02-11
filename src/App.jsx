@@ -7,7 +7,8 @@ import * as actions from './store/actions/index';
 
 // containers
 import MainMenu from './containers/MainMenu/MainMenu';
-
+import Lobby from './containers/Lobby/Lobby';
+import Game from './containers/Game/Game';
 
 class App extends Component {
   state = {}
@@ -21,6 +22,8 @@ class App extends Component {
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={MainMenu} />
+          <Route path="/lobby/:id" component={Lobby} />
+          <Route path="/game/:id" component={Game} />
           <Redirect to="/" />
         </Switch>
       </BrowserRouter>
