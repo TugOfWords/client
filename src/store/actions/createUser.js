@@ -39,12 +39,16 @@ export const createUserSuccess = (uid, username) => ({
   username,
 });
 
+
 /**
  * Handle the REMOVE_USER action
  * @returns {Object}
  *   the data for the REMOVE_USER action
  */
 export const removeUser = () => {
+  const uid = localStorage.getItem('uid');
+  const userData = { uid };
+  api.users.removeUser(userData);
   localStorage.removeItem('uid');
   localStorage.removeItem('username');
   localStorage.removeItem('currentRoom');

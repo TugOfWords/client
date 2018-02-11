@@ -1,17 +1,16 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { Link } from 'react-router-dom';
 
 // components
 import { Button, Form } from 'semantic-ui-react';
 import TextInput from '../../components/TextInput/TextInput';
-import NewRoomDialog from './NewRoomDialog';
+import Dialog from './NewRoomDialog';
 
 import * as actions from '../../store/actions/index';
 
 
-class MainMenu extends Component {
+export class MainMenu extends Component {
   state = {
     username: '',
   }
@@ -61,8 +60,8 @@ class MainMenu extends Component {
           <h1> Hello, {this.props.username}! </h1>
           {this.renderButton('Play Now', 'green', () => console.log('Joining random lobby...'))}
 
-          <br />          
-          <NewRoomDialog
+          <br />
+          <Dialog
             trigger={this.renderButton}
             content={<h1> Are you sure you want to create a room? </h1>}
             confirm={this.createRoom}
@@ -88,6 +87,7 @@ MainMenu.propTypes = {
   username: PropTypes.string.isRequired,
   onCreateUser: PropTypes.func.isRequired,
   onCreateRoom: PropTypes.func.isRequired,
+  onRemoveUser: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -99,7 +99,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   onCreateUser: username => dispatch(actions.createUser(username)),
   onCreateRoom: uid => dispatch(actions.createRoom(uid)),
-  onRemoveUser: () => dispatch(actions.removeUser())
+  onRemoveUser: () => dispatch(actions.removeUser()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainMenu);

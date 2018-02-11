@@ -43,7 +43,7 @@ export const createRoomSuccess = rid => ({
  */
 export const createRoom = uid => (dispatch) => {
   dispatch(createRoomStart());
-  const rid = shortid.generate();
+  const rid = encodeURIComponent(shortid.generate());
   const roomData = { rid, uid };
   try {
     api.rooms.createRoom(roomData);
