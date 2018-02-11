@@ -1,6 +1,7 @@
 import shortid from 'shortid';
 import * as actionTypes from './actionTypes';
-import socket from '../socket-client';
+// import socket from '../socket-client';
+import api from '../../api';
 
 /**
  * Handle the CREATE_ROOM_START action
@@ -40,12 +41,12 @@ export const createRoomSuccess = rid => ({
  * @param {String} roomname
  *   the roomname entered by the room
  */
-export const createRoom = () => (dispatch) => {
+export const createRoom = uid => (dispatch) => {
   dispatch(createRoomStart());
   const rid = shortid.generate();
-  const roomData = { rid };
+  const roomData = { rid, uid };
   try {
-    socket.emit('createRoom', roomData);
+    api.rooms.createRoom(roomData);
     localStorage.setItem('currentRoom', rid);
     dispatch(createRoomSuccess(rid));
   } catch (e) {

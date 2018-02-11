@@ -1,6 +1,7 @@
 import shortid from 'shortid';
 import * as actionTypes from './actionTypes';
-import socket from '../socket-client';
+// import socket from '../socket-client';
+import api from '../../api';
 
 /**
  * Handle the CREATE_USER_START action
@@ -77,7 +78,7 @@ export const createUser = username => (dispatch) => {
   const uid = shortid.generate();
   const userData = { uid, username };
   try {
-    socket.emit('createUser', userData);
+    api.users.createUser(userData);
     localStorage.setItem('uid', uid);
     localStorage.setItem('username', username);
     dispatch(createUserSuccess(uid, username));

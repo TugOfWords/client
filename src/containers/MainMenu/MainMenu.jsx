@@ -29,6 +29,10 @@ class MainMenu extends Component {
     window.location.href = '/';
   }
 
+  createRoom = () => {
+    this.props.onCreateRoom(this.props.uid);
+  }
+
   renderButton = (text, color, action, top) => (
     <Button basic color={color} onClick={action} style={{ marginTop: top || '10px' }}>
       {text}
@@ -61,7 +65,7 @@ class MainMenu extends Component {
           <NewRoomDialog
             trigger={this.renderButton}
             content={<h1> Are you sure you want to create a room? </h1>}
-            confirm={this.props.onCreateRoom}
+            confirm={this.createRoom}
             cancel={() => console.log('Canceled creation of new private room')}
           />
 
@@ -89,11 +93,12 @@ MainMenu.propTypes = {
 const mapStateToProps = state => ({
   isNewUser: state.createUser.uid === null || state.createUser.username === null,
   username: state.createUser.username || '',
+  uid: state.createUser.uid
 });
 
 const mapDispatchToProps = dispatch => ({
   onCreateUser: username => dispatch(actions.createUser(username)),
-  onCreateRoom: () => dispatch(actions.createRoom()),
+  onCreateRoom: uid => dispatch(actions.createRoom(uid)),
   onRemoveUser: () => dispatch(actions.removeUser())
 });
 
