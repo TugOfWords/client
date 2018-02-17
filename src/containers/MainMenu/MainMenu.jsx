@@ -96,9 +96,9 @@ MainMenu.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  isNewUser: state.createUser.uid === null || state.createUser.username === null,
-  username: state.createUser.username || '',
-  uid: state.createUser.uid,
+  isNewUser: state.user.uid === null || state.user.username === null,
+  username: state.user.username || '',
+  uid: state.user.uid,
 });
 
 const mapDispatchToProps = dispatch => ({

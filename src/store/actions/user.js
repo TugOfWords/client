@@ -4,23 +4,23 @@ import * as actionTypes from './actionTypes';
 import api from '../../api';
 
 /**
- * Handle the CREATE_USER_START action
+ * Handle the USER_ACTION_START action
  * @returns {Object}
- *   the data for CREATE_USER_START
+ *   the data for USER_ACTION_START
  */
-export const createUserStart = () => ({
-  type: actionTypes.CREATE_USER_START,
+export const userActionStart = () => ({
+  type: actionTypes.USER_ACTION_START,
 });
 
 /**
- * Handle the CREATE_USER_FAILURE action
+ * Handle the USER_ACTION_FAILURE action
  * @param {String} error
  *   the current application error message
  * @returns {Object}
- *   the data for CREATE_USER_FAILURE
+ *   the data for USER_ACTION_FAILURE
  */
-export const createUserFailure = error => ({
-  type: actionTypes.CREATE_USER_FAILURE,
+export const userActionFailure = error => ({
+  type: actionTypes.USER_ACTION_FAILURE,
   error,
 });
 
@@ -67,6 +67,7 @@ export const createUserAuto = () => (dispatch) => {
   const uid = localStorage.getItem('uid');
   if (!username || !uid) {
     dispatch(removeUser());
+    localStorage.removeItem('currentRoom');
   } else {
     dispatch(createUserSuccess(uid, username));
   }
@@ -78,7 +79,7 @@ export const createUserAuto = () => (dispatch) => {
  *   the username entered by the user
  */
 export const createUser = username => (dispatch) => {
-  dispatch(createUserStart());
+  dispatch(userActionStart());
   const uid = shortid.generate();
   const userData = { uid, username };
   try {
@@ -87,7 +88,7 @@ export const createUser = username => (dispatch) => {
     localStorage.setItem('username', username);
     dispatch(createUserSuccess(uid, username));
   } catch (e) {
-    dispatch(createUserFailure(e));
+    dispatch(userActionFailure(e));
   }
 };
 

@@ -9,16 +9,16 @@ export const initialState = {
 };
 
 /**
- * Update the state to reflect the CREATE_USER_START action
+ * Update the state to reflect the USER_ACTION_START action
  * @param {Object} state
  *   the current state of the create user reducer
  * @returns {Object}
  *   the updated state
  */
-const createUserStart = state => updateObject(state, { loading: true });
+const userActionStart = state => updateObject(state, { loading: true });
 
 /**
- * Update the state to reflect the CREATE_USER_FAILURE action
+ * Update the state to reflect the USER_ACTION_FAILURE action
  * @param {Object} state
  *   the current state of the create user reducer
  * @param {Object} action
@@ -26,7 +26,7 @@ const createUserStart = state => updateObject(state, { loading: true });
  * @returns {Object}
  *   the updated state
  */
-const createUserFailure = (state, action) => updateObject(state, {
+const userActionFailure = (state, action) => updateObject(state, {
   loading: false,
   error: action.error,
 });
@@ -78,10 +78,10 @@ const removeUser = (state) => {
  */
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.CREATE_USER_START:
-      return createUserStart(state);
-    case actionTypes.CREATE_USER_FAILURE:
-      return createUserFailure(state, action);
+    case actionTypes.USER_ACTION_START:
+      return userActionStart(state);
+    case actionTypes.USER_ACTION_FAILURE:
+      return userActionFailure(state, action);
     case actionTypes.CREATE_USER_SUCCESS:
       return createUserSuccess(state, action);
     case actionTypes.REMOVE_USER:

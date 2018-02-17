@@ -2,20 +2,35 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+// components
+import { Card } from 'semantic-ui-react';
+import TeamCard from '../../components/TeamCard/TeamCard';
+
 class Lobby extends Component {
-  state = {}
+  state = {
+    private: true,
+  }
+
   render() {
     return (
-      <div>
-        <h1>Lobby Page</h1>
-        <div>
-          <h2> Team 1 </h2>
-          {this.props.teamOne.map(p => <h3> {p} </h3>)}
-        </div>
-        <div>
-          <h2> Team 2 </h2>
-          {this.props.teamTwo.map(p => <h3> {p} </h3>)}
-        </div>
+      <div align="center" style={{ marginTop: '25px' }}>
+        <h1>Pregame Lobby</h1>
+
+        {/* Team 1 */}
+        <Card.Group itemsPerRow={2} style={{ marginLeft: '10%', marginRight: '10%', marginTop: '30px' }}>
+          <TeamCard
+            players={this.props.teamOne}
+            teamNumber={1}
+            private={this.state.private}
+          />
+
+          {/* Team 2 */}
+          <TeamCard
+            players={this.props.teamTwo}
+            teamNumber={2}
+            private={this.state.private}
+          />
+        </Card.Group>
       </div>
     );
   }

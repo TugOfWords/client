@@ -4,12 +4,12 @@ import * as actionTypes from './actionTypes';
 import api from '../../api';
 
 /**
- * Handle the CREATE_ROOM_START action
+ * Handle the ROOM_ACTION_START action
  * @returns {Object}
- *   the data for CREATE_ROOM_START
+ *   the data for ROOM_ACTION_START
  */
-export const createRoomStart = () => ({
-  type: actionTypes.CREATE_ROOM_START,
+export const roomActionStart = () => ({
+  type: actionTypes.ROOM_ACTION_START,
 });
 
 /**
@@ -19,8 +19,8 @@ export const createRoomStart = () => ({
  * @returns {Object}
  *   the data for CREATE_ROOM_FAILURE
  */
-export const createRoomFailure = error => ({
-  type: actionTypes.CREATE_ROOM_FAILURE,
+export const roomActionFailure = error => ({
+  type: actionTypes.ROOM_ACTION_FAILURE,
   error,
 });
 
@@ -42,7 +42,7 @@ export const createRoomSuccess = rid => ({
  *   the roomname entered by the room
  */
 export const createRoom = uid => (dispatch) => {
-  dispatch(createRoomStart());
+  dispatch(roomActionStart());
   const rid = encodeURIComponent(shortid.generate());
   const roomData = { rid, uid };
   try {
@@ -50,7 +50,7 @@ export const createRoom = uid => (dispatch) => {
     localStorage.setItem('currentRoom', rid);
     dispatch(createRoomSuccess(rid));
   } catch (e) {
-    dispatch(createRoomFailure(e));
+    dispatch(roomActionFailure(e));
   }
 };
 

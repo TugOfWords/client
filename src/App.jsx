@@ -22,6 +22,7 @@ class App extends Component {
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={Menu} />
+          <Route exact path="/lobby-test" component={Lobby} />
           <Route path="/lobby/:id" component={Lobby} />
           <Route path="/game/:id" component={Game} />
           <Redirect to="/" />
@@ -37,7 +38,7 @@ App.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  isNewUser: state.createUser.uid === null,
+  isNewUser: state.user.uid === null,
 });
 
 const mapDispatchToProps = dispatch => ({

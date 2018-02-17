@@ -8,13 +8,13 @@ import thunk from 'redux-thunk';
 import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-import createUser from './store/reducers/createUser';
-import createRoom from './store/reducers/createRoom';
+import user from './store/reducers/user';
+import room from './store/reducers/room';
 
 // add all new reducers here...
 const appReducer = combineReducers({
-  createUser,
-  createRoom
+  user,
+  room
 });
 
 /**

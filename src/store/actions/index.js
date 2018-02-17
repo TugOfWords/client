@@ -2,7 +2,7 @@ export {
   createUserAuto,
   createUser,
   removeUser,
-} from './createUser';
+} from './user';
 export {
   createRoom,
-} from './createRoom';
+} from './room';

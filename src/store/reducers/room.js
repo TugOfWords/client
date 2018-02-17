@@ -8,24 +8,24 @@ export const initialState = {
 };
 
 /**
- * Update the state to reflect the CREATE_ROOM_START action
+ * Update the state to reflect the start of an action
  * @param {Object} state
- *   the current state of the create room reducer
+ *   the current state of the room reducer
  * @returns {Object}
  *   the updated state
  */
-const createRoomStart = state => updateObject(state, { loading: true });
+const roomActionStart = state => updateObject(state, { loading: true });
 
 /**
- * Update the state to reflect the CREATE_ROOM_FAILURE action
+ * Update the state to reflect a failure of an action
  * @param {Object} state
- *   the current state of the create room reducer
+ *   the current state of the room reducer
  * @param {Object} action
  *   the current action object
  * @returns {Object}
  *   the updated state
  */
-const createRoomFailure = (state, action) => updateObject(state, {
+const roomActionFailure = (state, action) => updateObject(state, {
   loading: false,
   error: action.error,
 });
@@ -33,7 +33,7 @@ const createRoomFailure = (state, action) => updateObject(state, {
 /**
  * Update the state to reflect the CREATE_ROOM_SUCCESS action
  * @param {Object} state
- *   the current state of the create room reducer
+ *   the current state of the room reducer
  * @param {Object} action
  *   the current action object
  * @returns {Object}
@@ -49,11 +49,10 @@ const createRoomSuccess = (state, action) => {
   return updateObject(state, updatedState);
 };
 
-
 /**
  * Handler for the current action type
  * @param {Object} state
- *   the current state of the create room reducer
+ *   the current state of the room reducer
  * @param {Object} action
  *   the current action object
  * @returns {Object}
@@ -61,10 +60,10 @@ const createRoomSuccess = (state, action) => {
  */
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.CREATE_ROOM_START:
-      return createRoomStart(state);
-    case actionTypes.CREATE_ROOM_FAILURE:
-      return createRoomFailure(state, action);
+    case actionTypes.ROOM_ACTION_START:
+      return roomActionStart(state);
+    case actionTypes.ROOM_ACTION_FAILURE:
+      return roomActionFailure(state, action);
     case actionTypes.CREATE_ROOM_SUCCESS:
       return createRoomSuccess(state, action);
     default:
