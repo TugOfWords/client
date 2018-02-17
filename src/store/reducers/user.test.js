@@ -1,14 +1,14 @@
-import reducer, { initialState } from './createUser';
+import reducer, { initialState } from './user';
 import * as actionTypes from '../actions/actionTypes';
 
-describe('createUser reducer', () => {
+describe('user reducer', () => {
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual({
       ...initialState,
     });
   });
 
-  it('should store the uid and username after submitting the username', () => {
+  it('should create the user', () => {
     expect(reducer({
       ...initialState,
     }, { type: actionTypes.CREATE_USER_SUCCESS, uid: 'some-id', username: 'some-name' })).toEqual({
