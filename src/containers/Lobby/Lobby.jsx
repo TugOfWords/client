@@ -6,12 +6,15 @@ import { connect } from 'react-redux';
 import { Card } from 'semantic-ui-react';
 import TeamCard from '../../components/TeamCard/TeamCard';
 
+import socket from '../../socket';
+
 class Lobby extends Component {
   state = {
     private: true,
   }
 
   render() {
+    socket.connect(this.props.match.params.id);
     return (
       <div align="center" style={{ marginTop: '25px' }}>
         <h1>Pregame Lobby</h1>
@@ -22,6 +25,7 @@ class Lobby extends Component {
             players={this.props.teamOne}
             teamNumber={1}
             private={this.state.private}
+            joinTeam={socket.joinTeam}
           />
 
           {/* Team 2 */}
@@ -29,6 +33,7 @@ class Lobby extends Component {
             players={this.props.teamTwo}
             teamNumber={2}
             private={this.state.private}
+            joinTeam={socket.joinTeam}
           />
         </Card.Group>
       </div>
@@ -39,11 +44,17 @@ class Lobby extends Component {
 Lobby.defaultProps = {
   teamOne: [],
   teamTwo: [],
+  match: {},
 };
 
 Lobby.propTypes = {
   teamOne: PropTypes.arrayOf(PropTypes.string),
   teamTwo: PropTypes.arrayOf(PropTypes.string),
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string.isRequired(),
+    }).isRequired(),
+  }).isRequired(),
 };
 
 export default connect(null, null)(Lobby);

@@ -2,6 +2,7 @@ import shortid from 'shortid';
 import * as actionTypes from './actionTypes';
 // import socket from '../socket-client';
 import api from '../../api';
+import socket from '../../socket';
 
 /**
  * Handle the ROOM_ACTION_START action
@@ -37,6 +38,18 @@ export const createRoomSuccess = rid => ({
 });
 
 /**
+ * Handle the JOIN_ROOM_SUCCESS action
+ * @param {String} rid
+ *   the unique roomid
+ * @returns {Object}
+ *   the data for CREATE_ROOM_SUCCESS
+ */
+export const joinRoomSuccess = rid => ({
+  type: actionTypes.JOIN_ROOM_SUCCESS,
+  rid,
+});
+
+/**
  * Handle the creation of a new room
  * @param {String} roomname
  *   the roomname entered by the room
@@ -54,3 +67,17 @@ export const createRoom = uid => (dispatch) => {
   }
 };
 
+/**
+ * Handle the joining of a new room
+ * @param {String} roomname
+ *   the roomname entered by the room
+ */
+export const joinRoom = rid => (dispatch) => {
+  dispatch(roomActionStart());
+  try {
+    socket.connect(rid);
+    dispatch(createRoomSuccess(rid));
+  } catch (e) {
+    dispatch(roomActionFailure(e));
+  }
+};

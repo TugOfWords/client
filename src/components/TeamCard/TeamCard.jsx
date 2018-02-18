@@ -26,7 +26,7 @@ const TeamCard = (props) => {
   const renderJoinButton = () => {
     if (!props.private) return null;
     return (
-      <Button basic color="green" content="Join Team" onClick={() => props.joinTeam()} />
+      <Button basic color="green" content="Join Team" onClick={() => { props.joinTeam(props.teamNumber); }} />
     );
   };
 
@@ -46,7 +46,7 @@ const TeamCard = (props) => {
 TeamCard.defaultProps = {
   private: false,
   players: ['charlie', 'jenna', 'daniel'],
-  joinTeam: () => { },
+  joinTeam: (teamNumber) => { console.log(teamNumber); },
 };
 
 /* eslint-disable */
