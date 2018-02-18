@@ -13,7 +13,6 @@ describe('room reducer', () => {
       ...initialState,
     }, { type: actionTypes.CREATE_ROOM_SUCCESS, rid: 'some-id' })).toEqual({
       ...initialState,
-      rid: 'some-id',
     });
   });
 });
