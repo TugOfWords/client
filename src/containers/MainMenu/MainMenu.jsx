@@ -32,8 +32,8 @@ export class MainMenu extends Component {
     this.props.onCreateRoom(this.props.uid);
   }
 
-  renderButton = (text, color, action, top) => (
-    <Button basic color={color} onClick={action} style={{ marginTop: top || '10px' }}>
+  renderButton = (text, color, action, top, disabled) => (
+    <Button basic color={color} disabled={disabled || false} onClick={action} style={{ marginTop: top || '10px' }}>
       {text}
     </Button>
   );
@@ -49,7 +49,7 @@ export class MainMenu extends Component {
             placeholder="Enter your username"
             onChange={e => this.updateUsername(e.target.value)}
           />
-          {this.renderButton('Submit Name', 'green', this.submitUsername, '0px')}
+          {this.renderButton('Submit Name', 'green', this.submitUsername, '0px', this.state.username.trim() === '')}
           <br />
         </Form>
       );
