@@ -20,7 +20,7 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        {this.props.rid === '' ?
+        {this.props.lid === '' ?
           <Switch>
             <Route exact path="/" component={Menu} />
             <Redirect to="/" />
@@ -28,7 +28,7 @@ class App extends Component {
           :
           <Switch>
             <Route exact path="/lobby/:id" component={Lobby} />
-            <Redirect to={`/lobby/${this.props.rid}`} />
+            <Redirect to={`/lobby/${this.props.lid}`} />
           </Switch>
         }
       </BrowserRouter >
@@ -37,12 +37,12 @@ class App extends Component {
 }
 
 App.propTypes = {
-  rid: PropTypes.string.isRequired,
+  lid: PropTypes.string.isRequired,
   onCreateUserAuto: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
-  rid: state.room.rid || '',
+  lid: state.lobby.lid || '',
 });
 
 const mapDispatchToProps = dispatch => ({

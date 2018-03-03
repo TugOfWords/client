@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 // components
 import { Button, Header, Modal } from 'semantic-ui-react';
 
-export class NewRoomDialog extends Component {
+export class NewLobbyDialog extends Component {
   state = { open: false }
 
   toggleDialog = () => this.setState({ open: !this.state.open });
@@ -24,7 +24,7 @@ export class NewRoomDialog extends Component {
       <Modal
         basic
         open={this.state.open}
-        trigger={this.props.trigger('Create Private Room', 'blue', this.toggleDialog)}
+        trigger={this.props.trigger('Create Private Lobby', 'blue', this.toggleDialog)}
       >
         <Header> {this.props.header} </Header>
         <Modal.Content>
@@ -43,11 +43,11 @@ export class NewRoomDialog extends Component {
   }
 }
 
-NewRoomDialog.defaultProps = {
-  header: 'Create Private Room',
+NewLobbyDialog.defaultProps = {
+  header: 'Create Private Lobby',
 };
 
-NewRoomDialog.propTypes = {
+NewLobbyDialog.propTypes = {
   trigger: PropTypes.func.isRequired,
   header: PropTypes.string,
   content: PropTypes.element.isRequired,
@@ -55,5 +55,5 @@ NewRoomDialog.propTypes = {
   cancel: PropTypes.func.isRequired,
 };
 
-export default NewRoomDialog;
+export default NewLobbyDialog;
 

@@ -4,5 +4,5 @@ export {
   removeUser,
 } from './user';
 export {
-  createRoom,
-} from './room';
+  createLobby,
+} from './lobby';

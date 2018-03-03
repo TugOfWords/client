@@ -9,12 +9,13 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import user from './store/reducers/user';
-import room from './store/reducers/room';
+import lobby from './store/reducers/lobby';
 
 // add all new reducers here...
 const appReducer = combineReducers({
   user,
-  room
+  lobby,
+  lobby
 });
 
 /**

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 // components
 import { Button, Form } from 'semantic-ui-react';
 import TextInput from '../../components/TextInput/TextInput';
-import NewRoomModal from './NewRoomDialog';
+import NewLobbyModal from './NewLobbyDialog';
 
 import * as actions from '../../store/actions/index';
 
@@ -28,8 +28,8 @@ export class MainMenu extends Component {
     window.location.href = '/';
   }
 
-  createRoom = () => {
-    this.props.onCreateRoom(this.props.uid);
+  createLobby = () => {
+    this.props.onCreateLobby(this.props.uid);
   }
 
   renderButton = (text, color, action, top, disabled) => (
@@ -61,11 +61,11 @@ export class MainMenu extends Component {
           {this.renderButton('Play Now', 'green', () => console.log('Joining random lobby...'))}
 
           <br />
-          <NewRoomModal
+          <NewLobbyModal
             trigger={this.renderButton}
-            content={<h1> Are you sure you want to create a room? </h1>}
-            confirm={this.createRoom}
-            cancel={() => console.log('Canceled creation of new private room')}
+            content={<h1> Are you sure you want to create a lobby? </h1>}
+            confirm={this.createLobby}
+            cancel={() => console.log('Canceled creation of new private lobby')}
           />
 
           <br />
@@ -91,7 +91,7 @@ MainMenu.propTypes = {
   uid: PropTypes.string,
   username: PropTypes.string.isRequired,
   onCreateUser: PropTypes.func.isRequired,
-  onCreateRoom: PropTypes.func.isRequired,
+  onCreateLobby: PropTypes.func.isRequired,
   onRemoveUser: PropTypes.func.isRequired,
 };
 
@@ -103,7 +103,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onCreateUser: username => dispatch(actions.createUser(username)),
-  onCreateRoom: uid => dispatch(actions.createRoom(uid)),
+  onCreateLobby: uid => dispatch(actions.createLobby(uid)),
   onRemoveUser: () => dispatch(actions.removeUser()),
 });
 
