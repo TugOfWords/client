@@ -9,12 +9,12 @@ export const CREATE_USER_AUTO = 'CREATE_USER_AUTO';
 // remove a user
 export const REMOVE_USER = 'REMOVE_USER';
 
-/* ROOM ACTIONS */
-export const ROOM_ACTION_FAILURE = 'ROOM_ACTION_FAILURE';
-export const ROOM_ACTION_START = 'ROOM_ACTION_START';
+/* LOBBY ACTIONS */
+export const LOBBY_ACTION_FAILURE = 'LOBBY_ACTION_FAILURE';
+export const LOBBY_ACTION_START = 'LOBBY_ACTION_START';
 
-// create a room
-export const CREATE_ROOM_SUCCESS = 'CREATE_ROOM_SUCCESS';
+// create a lobby
+export const CREATE_LOBBY_SUCCESS = 'CREATE_LOBBY_SUCCESS';
 
-// join a room
-export const JOIN_ROOM_SUCCESS = 'JOIN_ROOM_SUCCESS';
+// join a lobby
+export const JOIN_LOBBY_SUCCESS = 'JOIN_LOBBY_SUCCESS';

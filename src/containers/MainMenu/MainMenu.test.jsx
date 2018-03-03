@@ -20,7 +20,7 @@ describe('<MainMenu />', () => {
       isNewUser
       username="some-user"
       onCreateUser={doNothing}
-      onCreateRoom={doNothing}
+      onCreateLobby={doNothing}
       onRemoveUser={doNothing}
     />);
   });

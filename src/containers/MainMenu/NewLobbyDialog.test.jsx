@@ -4,11 +4,11 @@ import Adapter from 'enzyme-adapter-react-16';
 
 // components
 import { Button, Header, Modal } from 'semantic-ui-react';
-import { NewRoomDialog } from './NewRoomDialog';
+import { NewLobbyDialog } from './NewLobbyDialog';
 
 configure({ adapter: new Adapter() });
 
-describe('<NewRoomDialog />', () => {
+describe('<NewLobbyDialog />', () => {
   let wrapper;
 
   beforeEach(() => {
@@ -16,7 +16,7 @@ describe('<NewRoomDialog />', () => {
     const doNothing = () => { };
     const content = <div />;
 
-    wrapper = shallow(<NewRoomDialog
+    wrapper = shallow(<NewLobbyDialog
       trigger={doNothing}
       confirm={doNothing}
       cancel={doNothing}

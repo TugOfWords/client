@@ -27,7 +27,7 @@ export const userActionFailure = error => ({
 /**
  * Handle the CREATE_USER_SUCCESS action
  * @param {String} uid
- *   the unique userid that identifies the current user
+ *   the unique uselid that identifies the current user
  * @param {String} username
  *   the name the user has chosen
  * @returns {Object}
@@ -51,7 +51,7 @@ export const removeUser = () => {
   api.users.removeUser(userData);
   localStorage.removeItem('uid');
   localStorage.removeItem('username');
-  localStorage.removeItem('currentRoom');
+  localStorage.removeItem('currentLobby');
   return {
     type: actionTypes.REMOVE_USER,
   };
@@ -67,7 +67,7 @@ export const createUserAuto = () => (dispatch) => {
   const uid = localStorage.getItem('uid');
   if (!username || !uid) {
     dispatch(removeUser());
-    localStorage.removeItem('currentRoom');
+    localStorage.removeItem('currentLobby');
   } else {
     dispatch(createUserSuccess(uid, username));
   }

@@ -2,7 +2,7 @@ import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../utility';
 
 export const initialState = {
-  rid: null,
+  lid: null,
   loading: false,
   error: null,
 };
@@ -10,36 +10,36 @@ export const initialState = {
 /**
  * Update the state to reflect the start of an action
  * @param {Object} state
- *   the current state of the room reducer
+ *   the current state of the lobby reducer
  * @returns {Object}
  *   the updated state
  */
-const roomActionStart = state => updateObject(state, { loading: true });
+const lobbyActionStart = state => updateObject(state, { loading: true });
 
 /**
  * Update the state to reflect a failure of an action
  * @param {Object} state
- *   the current state of the room reducer
+ *   the current state of the lobby reducer
  * @param {Object} action
  *   the current action object
  * @returns {Object}
  *   the updated state
  */
-const roomActionFailure = (state, action) => updateObject(state, {
+const lobbyActionFailure = (state, action) => updateObject(state, {
   loading: false,
   error: action.error,
 });
 
 /**
- * Update the state to reflect the CREATE_ROOM_SUCCESS action
+ * Update the state to reflect the CREATE_LOBBY_SUCCESS action
  * @param {Object} state
- *   the current state of the room reducer
+ *   the current state of the lobby reducer
  * @param {Object} action
  *   the current action object
  * @returns {Object}
  *   the updated state
  */
-const createRoomSuccess = (state) => {
+const createLobbySuccess = (state) => {
   const updatedState = {
     ...state,
     loading: false,
@@ -48,10 +48,10 @@ const createRoomSuccess = (state) => {
   return updateObject(state, updatedState);
 };
 
-const joinRoomSuccess = (state, action) => {
+const joinLobbySuccess = (state, action) => {
   const updatedState = {
     ...state,
-    rid: action.rid,
+    lid: action.lid,
     loading: false,
     error: null,
   };
@@ -61,7 +61,7 @@ const joinRoomSuccess = (state, action) => {
 /**
  * Handler for the current action type
  * @param {Object} state
- *   the current state of the room reducer
+ *   the current state of the lobby reducer
  * @param {Object} action
  *   the current action object
  * @returns {Object}
@@ -69,14 +69,14 @@ const joinRoomSuccess = (state, action) => {
  */
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.ROOM_ACTION_START:
-      return roomActionStart(state);
-    case actionTypes.ROOM_ACTION_FAILURE:
-      return roomActionFailure(state, action);
-    case actionTypes.CREATE_ROOM_SUCCESS:
-      return createRoomSuccess(state, action);
-    case actionTypes.JOIN_ROOM_SUCCESS:
-      return joinRoomSuccess(state, action);
+    case actionTypes.LOBBY_ACTION_START:
+      return lobbyActionStart(state);
+    case actionTypes.LOBBY_ACTION_FAILURE:
+      return lobbyActionFailure(state, action);
+    case actionTypes.CREATE_LOBBY_SUCCESS:
+      return createLobbySuccess(state, action);
+    case actionTypes.JOIN_LOBBY_SUCCESS:
+      return joinLobbySuccess(state, action);
     default:
       return state;
   }

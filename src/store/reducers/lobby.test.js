@@ -1,17 +1,17 @@
-import reducer, { initialState } from './room';
+import reducer, { initialState } from './lobby';
 import * as actionTypes from '../actions/actionTypes';
 
-describe('room reducer', () => {
+describe('lobby reducer', () => {
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual({
       ...initialState,
     });
   });
 
-  it('should create a room', () => {
+  it('should create a lobby', () => {
     expect(reducer({
       ...initialState,
-    }, { type: actionTypes.CREATE_ROOM_SUCCESS, rid: 'some-id' })).toEqual({
+    }, { type: actionTypes.CREATE_LOBBY_SUCCESS, lid: 'some-id' })).toEqual({
       ...initialState,
     });
   });

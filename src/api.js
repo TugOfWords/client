@@ -13,9 +13,9 @@ const api = {
     createUser: payload => instance.post('/users/createUser', payload).then(res => res.data),
     removeUser: payload => instance.post('/users/removeUser', payload).then(res => res.data),
   },
-  rooms: {
-    createRoom: payload => instance.post('/rooms/createRoom', payload).then(res => res.data),
-    joinRoom: payload => instance.post('/rooms/joinRoom', payload).then(res => res.data),
+  lobbys: {
+    createLobby: payload => instance.post('/lobbys/createLobby', payload).then(res => res.data),
+    joinLobby: payload => instance.post('/lobbys/joinLobby', payload).then(res => res.data),
   },
 };
 
