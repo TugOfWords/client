@@ -5,4 +5,5 @@ export {
 } from './user';
 export {
   createLobby,
+  joinTeam,
 } from './lobby';

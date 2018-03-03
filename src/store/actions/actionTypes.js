@@ -17,4 +17,8 @@ export const LOBBY_ACTION_START = 'LOBBY_ACTION_START';
 export const CREATE_LOBBY_SUCCESS = 'CREATE_LOBBY_SUCCESS';
 
 // join a lobby
+export const JOIN_LOBBY_AUTO = 'JOIN_LOBBY_AUTO';
 export const JOIN_LOBBY_SUCCESS = 'JOIN_LOBBY_SUCCESS';
+
+// join a team
+export const JOIN_TEAM_SUCCESS = 'JOIN_TEAM_SUCCESS';
