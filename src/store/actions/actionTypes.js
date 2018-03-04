@@ -23,4 +23,3 @@ export const JOIN_LOBBY_SUCCESS = 'JOIN_LOBBY_SUCCESS';
 
 // join a team
 export const JOIN_TEAM_SUCCESS = 'JOIN_TEAM_SUCCESS';
-export const JOIN_LOBBY_SUCCESS = 'JOIN_LOBBY_SUCCESS';
