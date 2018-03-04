@@ -45,13 +45,12 @@ const TeamCard = (props) => {
 
 TeamCard.defaultProps = {
   private: false,
-  players: ['charlie', 'jenna', 'daniel'],
 };
 
 /* eslint-disable */
 TeamCard.propTypes = {
   teamNumber: PropTypes.number.isRequired,
-  players: PropTypes.arrayOf(PropTypes.string),
+  players: PropTypes.arrayOf(PropTypes.string).isRequired,
   private: PropTypes.bool,
   joinTeam: PropTypes.func.isRequired,
 };

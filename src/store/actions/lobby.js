@@ -25,6 +25,46 @@ export const lobbyActionFailure = error => ({
 });
 
 /**
+ * Handle the JOIN_TEAM_SUCCESS action
+ * @param {Number} teamNumber
+ *   the number of the team joined
+ */
+export const joinTeamSuccess = teamNumber => ({
+  type: actionTypes.JOIN_TEAM_SUCCESS,
+  teamNumber,
+});
+
+/**
+ * Add a user to a team
+ * @param {String} lid
+ *   the unique lobbyid
+ * @param {String} uid
+ *   the unique userid
+ * @param {Number} teamNumber
+ *   the number of the team to join
+ */
+export const joinTeam = (lid, teamNumber, uid) => (dispatch) => {
+  dispatch(lobbyActionStart());
+  const data = { lid, teamNumber, uid };
+  try {
+    socket.joinTeam(data);
+    localStorage.setItem('teamNumber', teamNumber);
+    dispatch(joinTeamSuccess(teamNumber));
+  } catch (e) {
+    dispatch(lobbyActionFailure(e));
+  }
+};
+
+export const joinTeamAuto = () => (dispatch) => {
+  const lid = localStorage.getItem('lid');
+  const teamNumber = localStorage.getItem('teamNumber');
+  const uid = localStorage.getItem('uid');
+  if (lid !== null && teamNumber !== null && uid !== null) {
+    dispatch(joinTeam(lid, teamNumber, uid));
+  }
+};
+
+/**
  * Handle the CREATE_LOBBY_SUCCESS action
  * @param {String} lid
  *   the unique lobbyid
@@ -60,8 +100,13 @@ export const joinLobby = (lid, uid) => (dispatch) => {
       socket.joinLobby(data);
       localStorage.setItem('lid', lid);
       dispatch(joinLobbySuccess(lid));
+      dispatch(joinTeamAuto());
     })
     .catch(e => dispatch(lobbyActionFailure(e)));
+};
+
+export const joinLobbyOnly = (lid) => {
+  localStorage.setItem('lid', lid);
 };
 
 /**
@@ -84,6 +129,19 @@ export const leaveLobby = (lid, uid) => (dispatch) => {
 };
 
 /**
+ * Join a lobby automatically if the user has valid values in localStorage
+ */
+export const joinLobbyAuto = () => (dispatch) => {
+  const lid = localStorage.getItem('lid');
+  const uid = localStorage.getItem('uid');
+  if (!lid) {
+    localStorage.removeItem('lid');
+  } else {
+    dispatch(joinLobby(lid, uid));
+  }
+};
+
+/**
  * Handle the creation of a new lobby
  * @param {String} lobbyname
  *   the lobbynam entered by the lobby
@@ -98,35 +156,4 @@ export const createLobby = uid => (dispatch) => {
       dispatch(joinLobby(lid, uid));
     })
     .catch(e => dispatch(lobbyActionFailure(e)));
-};
-
-/**
- * Handle the JOIN_TEAM_SUCCESS action
- * @param {Number} teamNumber
- *   the number of the team joined
- */
-export const joinTeamSuccess = teamNumber => ({
-  type: actionTypes.JOIN_TEAM_SUCCESS,
-  teamNumber,
-});
-
-/**
- * Add a user to a team
- * @param {String} lid
- *   the unique lobbyid
- * @param {String} uid
- *   the unique userid
- * @param {Number} teamNumber
- *   the number of the team to join
- */
-export const joinTeam = (lid, teamNumber, uid) => (dispatch) => {
-  dispatch(lobbyActionStart());
-  const data = { lid, teamNumber, uid };
-  try {
-    socket.joinTeam(data);
-    localStorage.setItem('teamNumber', teamNumber);
-    dispatch(joinTeamSuccess(teamNumber));
-  } catch (e) {
-    dispatch(lobbyActionFailure(e));
-  }
 };

@@ -18,6 +18,7 @@ export const CREATE_LOBBY_SUCCESS = 'CREATE_LOBBY_SUCCESS';
 
 // join a lobby
 export const JOIN_LOBBY_AUTO = 'JOIN_LOBBY_AUTO';
+export const JOIN_LOBBY_ONLY = 'JOIN_LOBBY_ONLY';
 export const JOIN_LOBBY_SUCCESS = 'JOIN_LOBBY_SUCCESS';
 
 // join a team

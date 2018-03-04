@@ -8,10 +8,33 @@ import TeamCard from '../../components/TeamCard/TeamCard';
 
 // actions
 import * as actions from '../../store/actions/index';
+import socket from '../../socket';
 
 class Lobby extends Component {
   state = {
     private: true,
+    t1: [],
+    t2: [],
+  }
+
+  componentDidMount() {
+    socket.onJoinLobby({ lid: this.props.lid }, (res) => {
+      const t1 = Object.assign({}, ...Object.keys(res.t1).map((k, i) =>
+        ({ [i]: res.t1[k].username })));
+      const t2 = Object.assign({}, ...Object.keys(res.t2).map((k, i) =>
+        ({ [i]: res.t2[k].username })));
+      console.log(t1, t2);
+      this.setState({ t1: Object.values(t1), t2: Object.values(t2) });
+    });
+
+    socket.onJoinTeam({ lid: this.props.lid }, (res) => {
+      const t1 = Object.assign({}, ...Object.keys(res.t1).map((k, i) =>
+        ({ [i]: res.t1[k].username })));
+      const t2 = Object.assign({}, ...Object.keys(res.t2).map((k, i) =>
+        ({ [i]: res.t2[k].username })));
+      console.log(t1, t2);
+      this.setState({ t1: Object.values(t1), t2: Object.values(t2) });
+    });
   }
 
   joinTeam = (teamNumber) => {
@@ -27,7 +50,7 @@ class Lobby extends Component {
         <Card.Group itemsPerRow={2} style={{ marginLeft: '10%', marginRight: '10%', marginTop: '30px' }}>
           <TeamCard
             joinTeam={() => this.joinTeam(1)}
-            players={this.props.teamOne}
+            players={this.state.t1}
             teamNumber={1}
             private={this.state.private}
           />
@@ -35,7 +58,7 @@ class Lobby extends Component {
           {/* Team 2 */}
           <TeamCard
             joinTeam={() => this.joinTeam(2)}
-            players={this.props.teamTwo}
+            players={this.state.t2}
             teamNumber={2}
             private={this.state.private}
           />
@@ -45,16 +68,9 @@ class Lobby extends Component {
   }
 }
 
-Lobby.defaultProps = {
-  teamOne: [],
-  teamTwo: [],
-};
-
 Lobby.propTypes = {
   uid: PropTypes.string.isRequired,
   lid: PropTypes.string.isRequired,
-  teamOne: PropTypes.arrayOf(PropTypes.string),
-  teamTwo: PropTypes.arrayOf(PropTypes.string),
   onJoinTeam: PropTypes.func.isRequired,
 };
 
