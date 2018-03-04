@@ -52,6 +52,7 @@ class App extends Component {
       <BrowserRouter>
         {view}
       </BrowserRouter>
+
     );
   }
 }
