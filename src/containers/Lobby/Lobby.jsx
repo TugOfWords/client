@@ -19,22 +19,24 @@ class Lobby extends Component {
 
   componentDidMount() {
     socket.onJoinLobby({ lid: this.props.lid }, (res) => {
-      const t1 = Object.assign({}, ...Object.keys(res.t1).map((k, i) =>
-        ({ [i]: res.t1[k].username })));
-      const t2 = Object.assign({}, ...Object.keys(res.t2).map((k, i) =>
-        ({ [i]: res.t2[k].username })));
-      console.log(t1, t2);
-      this.setState({ t1: Object.values(t1), t2: Object.values(t2) });
+      const teams = this.getUsersOnTeams(res);
+      this.setState({ t1: teams.t1, t2: teams.t2 });
     });
 
     socket.onJoinTeam({ lid: this.props.lid }, (res) => {
-      const t1 = Object.assign({}, ...Object.keys(res.t1).map((k, i) =>
-        ({ [i]: res.t1[k].username })));
-      const t2 = Object.assign({}, ...Object.keys(res.t2).map((k, i) =>
-        ({ [i]: res.t2[k].username })));
-      console.log(t1, t2);
-      this.setState({ t1: Object.values(t1), t2: Object.values(t2) });
+      console.log('joined team...');
+      const teams = this.getUsersOnTeams(res);
+      console.log(teams);
+      this.setState({ t1: teams.t1, t2: teams.t2 });
     });
+  }
+
+  getUsersOnTeams = (res) => {
+    const t1 = Object.assign({}, ...Object.keys(res.t1).map((k, i) =>
+      ({ [i]: res.t1[k].username })));
+    const t2 = Object.assign({}, ...Object.keys(res.t2).map((k, i) =>
+      ({ [i]: res.t2[k].username })));
+    return { t1: Object.values(t1), t2: Object.values(t2) };
   }
 
   joinTeam = (teamNumber) => {
