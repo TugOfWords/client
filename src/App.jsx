@@ -14,39 +14,65 @@ class App extends Component {
   state = {}
 
   componentDidMount() {
-    this.props.onCreateUserAuto(); // check for valid credentials in local storage
+    this.props.onCreateUserAuto();
+  }
+
+  componentWillReceiveProps() {
+    this.props.onJoinLobbyAuto();
   }
 
   render() {
+    let view = null;
+    if (this.props.uid === '' || this.props.lid === '') { // main menu
+      const Child = ({ match }) => {
+        localStorage.setItem('lid', match.params.id);
+        return <Redirect to="/" />;
+      };
+      view = (
+        <Switch>
+          <Route exact path="/" component={Menu} />
+          <Route
+            exact
+            path="/lobby/:id"
+            component={Child}
+          />
+          <Redirect to="/" />
+        </Switch>
+      );
+    } else { // lobby
+      view = (
+        <Switch>
+          <Route exact path="/lobby/:id" component={Lobby} />
+          <Redirect to={`/lobby/${this.props.lid}`} />
+        </Switch>
+      );
+    }
+
     return (
       <BrowserRouter>
-        {this.props.lid === '' ?
-          <Switch>
-            <Route exact path="/" component={Menu} />
-            <Redirect to="/" />
-          </Switch>
-          :
-          <Switch>
-            <Route exact path="/lobby/:id" component={Lobby} />
-            <Redirect to={`/lobby/${this.props.lid}`} />
-          </Switch>
-        }
-      </BrowserRouter >
+        {view}
+      </BrowserRouter>
+
     );
   }
 }
 
 App.propTypes = {
   lid: PropTypes.string.isRequired,
+  uid: PropTypes.string.isRequired,
   onCreateUserAuto: PropTypes.func.isRequired,
+  onJoinLobbyAuto: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
+  uid: state.user.uid || '',
   lid: state.lobby.lid || '',
 });
 
 const mapDispatchToProps = dispatch => ({
   onCreateUserAuto: () => dispatch(actions.createUserAuto()),
+  onJoinLobbyAuto: uid => dispatch(actions.joinLobbyAuto(uid)),
+  onJoinLobbyOnly: lid => dispatch(actions.joinLobbyOnly(lid)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -3,6 +3,7 @@ import { updateObject } from '../utility';
 
 export const initialState = {
   lid: null,
+  teamNumber: null,
   loading: false,
   error: null,
 };
@@ -58,6 +59,14 @@ const joinLobbySuccess = (state, action) => {
   return updateObject(state, updatedState);
 };
 
+const joinTeamSuccess = (state, action) => {
+  const updatedState = {
+    ...state,
+    teamNumber: action.teamNumber,
+  };
+  return updateObject(state, updatedState);
+};
+
 /**
  * Handler for the current action type
  * @param {Object} state
@@ -77,6 +86,8 @@ const reducer = (state = initialState, action) => {
       return createLobbySuccess(state, action);
     case actionTypes.JOIN_LOBBY_SUCCESS:
       return joinLobbySuccess(state, action);
+    case actionTypes.JOIN_TEAM_SUCCESS:
+      return joinTeamSuccess(state, action);
     default:
       return state;
   }

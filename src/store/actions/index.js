@@ -5,4 +5,7 @@ export {
 } from './user';
 export {
   createLobby,
+  joinLobbyAuto,
+  joinLobbyOnly,
+  joinTeam,
 } from './lobby';
