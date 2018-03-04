@@ -18,3 +18,10 @@ export const CREATE_ROOM_SUCCESS = 'CREATE_ROOM_SUCCESS';
 
 // join a room
 export const JOIN_ROOM_SUCCESS = 'JOIN_ROOM_SUCCESS';
+
+/* LOBBY ACTIONS */
+export const LOBBY_ACTION_FAILURE = 'LOBBY_ACTION_FAILURE';
+export const LOBBY_ACTION_START = 'LOBBY_ACTION_START';
+
+// join a team
+export const JOIN_TEAM_SUCCESS = 'JOIN_TEAM_SUCCESS';

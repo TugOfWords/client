@@ -6,10 +6,16 @@ import { connect } from 'react-redux';
 import { Card } from 'semantic-ui-react';
 import TeamCard from '../../components/TeamCard/TeamCard';
 
+import * as actions from '../../store/actions/lobby';
+
 class Lobby extends Component {
   state = {
     private: true,
   }
+
+  joinTeam = (teamNumber) => {
+    this.props.onJoinTeam(teamNumber);
+  };
 
   render() {
     return (
@@ -22,6 +28,7 @@ class Lobby extends Component {
             players={this.props.teamOne}
             teamNumber={1}
             private={this.state.private}
+            joinTeam={() => this.joinTeam(1)}
           />
 
           {/* Team 2 */}
@@ -29,6 +36,7 @@ class Lobby extends Component {
             players={this.props.teamTwo}
             teamNumber={2}
             private={this.state.private}
+            joinTeam={() => this.joinTeam(2)}
           />
         </Card.Group>
       </div>
@@ -44,6 +52,15 @@ Lobby.defaultProps = {
 Lobby.propTypes = {
   teamOne: PropTypes.arrayOf(PropTypes.string),
   teamTwo: PropTypes.arrayOf(PropTypes.string),
+  onJoinTeam: PropTypes.func.isRequired,
 };
 
-export default connect(null, null)(Lobby);
+const mapStateToProps = state => ({
+  username: state.user.username || '',
+});
+
+const mapDispatchToProps = dispatch => ({
+  onJoinTeam: teamNumber => dispatch(actions.joinTeam(teamNumber)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Lobby);
