@@ -6,6 +6,7 @@ export const initialState = {
   teamNumber: 0,
   loading: false,
   error: null,
+  private: false,
 };
 
 /**
@@ -55,6 +56,7 @@ const joinLobbySuccess = (state, action) => {
     lid: action.lid,
     loading: false,
     error: null,
+    private: action.private || false,
   };
   return updateObject(state, updatedState);
 };

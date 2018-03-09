@@ -9,4 +9,5 @@ export {
   joinLobbyOnly,
   joinTeam,
   leaveLobby,
+  joinPublicLobby,
 } from './lobby';

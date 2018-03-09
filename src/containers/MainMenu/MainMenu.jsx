@@ -15,6 +15,10 @@ export class MainMenu extends Component {
     username: '',
   }
 
+  joinPublicLobby = (uid) => {
+    this.props.onJoinPublicLobby(uid);
+  }
+
   updateUsername = (newUsername) => {
     this.setState({ username: newUsername });
   }
@@ -58,7 +62,7 @@ export class MainMenu extends Component {
       form = (
         <Form>
           <h1> Hello, {this.props.username}! </h1>
-          {this.renderButton('Play Now', 'green', () => console.log('Joining random lobby...'))}
+          {this.renderButton('Play Now', 'green', () => this.joinPublicLobby(this.props.uid))}
 
           <br />
           <NewLobbyModal
@@ -93,6 +97,7 @@ MainMenu.propTypes = {
   onCreateUser: PropTypes.func.isRequired,
   onCreateLobby: PropTypes.func.isRequired,
   onRemoveUser: PropTypes.func.isRequired,
+  onJoinPublicLobby: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -105,6 +110,7 @@ const mapDispatchToProps = dispatch => ({
   onCreateUser: username => dispatch(actions.createUser(username)),
   onCreateLobby: uid => dispatch(actions.createLobby(uid)),
   onRemoveUser: () => dispatch(actions.removeUser()),
+  onJoinPublicLobby: uid => dispatch(actions.joinPublicLobby(uid)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainMenu);

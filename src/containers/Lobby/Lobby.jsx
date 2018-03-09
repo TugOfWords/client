@@ -12,7 +12,6 @@ import socket from '../../socket';
 
 class Lobby extends Component {
   state = {
-    private: true,
     t1: [],
     t2: [],
   }
@@ -59,7 +58,7 @@ class Lobby extends Component {
             joinTeam={() => this.joinTeam(1)}
             players={this.state.t1}
             teamNumber={1}
-            private={this.state.private}
+            private={this.props.private}
             disabled={this.props.teamNumber === 1}
           />
 
@@ -68,7 +67,7 @@ class Lobby extends Component {
             joinTeam={() => this.joinTeam(2)}
             players={this.state.t2}
             teamNumber={2}
-            private={this.state.private}
+            private={this.props.private}
             disabled={this.props.teamNumber === 2}
           />
         </Card.Group>
@@ -83,6 +82,7 @@ class Lobby extends Component {
 Lobby.propTypes = {
   uid: PropTypes.string.isRequired,
   lid: PropTypes.string.isRequired,
+  private: PropTypes.bool.isRequired,
   onJoinTeam: PropTypes.func.isRequired,
   teamNumber: PropTypes.number.isRequired,
   onLeaveLobby: PropTypes.func.isRequired,
@@ -92,6 +92,7 @@ const mapStateToProps = state => ({
   teamNumber: state.lobby.teamNumber,
   uid: state.user.uid,
   lid: state.lobby.lid,
+  private: state.lobby.private,
 });
 
 const mapDispatchToProps = dispatch => ({

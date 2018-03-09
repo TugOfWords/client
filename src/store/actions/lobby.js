@@ -80,9 +80,10 @@ export const createLobbySuccess = () => ({
  * @param {String} lid
  *   the unique lobbyid
  */
-export const joinLobbySuccess = lid => ({
+export const joinLobbySuccess = (lid, isPublic) => ({
   type: actionTypes.JOIN_LOBBY_SUCCESS,
   lid,
+  private: isPublic || false,
 });
 
 /**
@@ -154,6 +155,22 @@ export const createLobby = uid => (dispatch) => {
     .then(() => {
       dispatch(createLobbySuccess());
       dispatch(joinLobby(lid, uid));
+    })
+    .catch(e => dispatch(lobbyActionFailure(e)));
+};
+
+/**
+ * Handle joining a public lobby
+ */
+export const joinPublicLobby = uid => (dispatch) => {
+  dispatch(lobbyActionStart());
+  api.lobbys.getLobby()
+    .then((res) => {
+      console.log(res);
+      socket.connect(res.lid);
+      socket.joinPublicLobby({ lid: res.lid, uid });
+      localStorage.setItem('lid', res.lid);
+      dispatch(joinLobbySuccess(res.lid, true));
     })
     .catch(e => dispatch(lobbyActionFailure(e)));
 };
