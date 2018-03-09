@@ -1,39 +1,30 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Input, Button, Form } from 'semantic-ui-react';
+import { Input } from 'semantic-ui-react';
 // import { Link } from 'react-router-dom';
 
 class Game extends Component {
   state = {
-    'input': '',
-    'word': 'hello',
-    'wrong': false
+    input: '',
+    word: 'hello',
+    wrong: false,
   }
 
-  updateInput = input => {
-    this.setState({ input });
+  getWord = () => {
+    const dict = ['rock', 'paper', 'scissor', 'jump', 'run', 'hello', 'goodbye'];
+    const word = dict[Math.floor(Math.random() * dict.length)];
+    this.updateWord(word);
   }
 
-
-  checkWord = () => {
-    if(this.state.word === this.state.input){
-      this.setState({ wrong: false });
-      return false;
-    }else{
-      this.setState({ wrong: true });
-      return true;
-    }
-  }
-
-  updateWord = word => {
+  updateWord = (word) => {
     this.setState({ word });
   }
 
   handleKeyPress = (event) => {
-    if(event.key === 'Enter'){
+    if (event.key === 'Enter') {
       console.log(this.state.input);
-      
-      if(!this.checkWord()){
+
+      if (!this.checkWord()) {
         this.updateInput('');
         this.getWord();
         this.forceUpdate();
@@ -42,26 +33,37 @@ class Game extends Component {
     }
   }
 
-  getWord = () => {
-    let dict = ['rock', 'paper', 'scissor', 'jump', 'run', 'hello', 'goodbye'];
-    let word = dict[Math.floor(Math.random()*dict.length)];
-    this.updateWord(word);
+  checkWord = () => {
+    if (this.state.word === this.state.input) {
+      this.setState({ wrong: false });
+      return false;
+    }
+    this.setState({ wrong: true });
+    return true;
+  }
+
+  updateInput = (input) => {
+    this.setState({ input });
   }
 
   render() {
     console.log(this.state.input);
     return (
       <div align="center" style={{ marginTop: '15%' }} >
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <h1 style={{color:this.state.wrong? 'red':'black'}}>{this.state.word}</h1>
-      <Input value={this.state.input} onKeyPress={this.handleKeyPress} onChange={e => this.updateInput(e.target.value)}/>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <h1 style={{ color: this.state.wrong ? 'red' : 'black' }}>{this.state.word}</h1>
+        <Input
+          value={this.state.input}
+          onKeyPress={this.handleKeyPress}
+          onChange={e => this.updateInput(e.target.value)}
+        />
       </div>
-        
+
     );
   }
 }
