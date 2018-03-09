@@ -20,4 +20,5 @@ export default {
     socket.on(`user joined team ${data.lid}`, res => cb(res));
   },
   leaveTeam: data => socket.emit('leaveTeam', data),
+  isConnected: () => (!!socket),
 };

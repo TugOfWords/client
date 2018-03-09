@@ -2,22 +2,39 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Input } from 'semantic-ui-react';
 // import { Link } from 'react-router-dom';
+// import socket from '../../socket';
 
 class Game extends Component {
   state = {
     input: '',
     word: 'hello',
     wrong: false,
+    wpm: 1,
+    wpmt: Date.now(),
+  }
+
+  componentDidMount = () => {
+    setInterval(() => {
+      this.setState({
+        wpm: (9 * this.state.wpm) / 10,
+      });
+    }, 200);
+  }
+
+  onInputChange = (input) => {
+    const te = (Date.now() - this.state.wpmt) / 1000;
+    this.setState({
+      wpm: (((60 / 8) * (1 / te)) + (9 * this.state.wpm)) / 10,
+      wpmt: Date.now(),
+    });
+
+    this.updateInput(input);
   }
 
   getWord = () => {
     const dict = ['rock', 'paper', 'scissor', 'jump', 'run', 'hello', 'goodbye'];
     const word = dict[Math.floor(Math.random() * dict.length)];
     this.updateWord(word);
-  }
-
-  updateWord = (word) => {
-    this.setState({ word });
   }
 
   handleKeyPress = (event) => {
@@ -42,6 +59,10 @@ class Game extends Component {
     return true;
   }
 
+  updateWord = (word) => {
+    this.setState({ word });
+  }
+
   updateInput = (input) => {
     this.setState({ input });
   }
@@ -60,8 +81,11 @@ class Game extends Component {
         <Input
           value={this.state.input}
           onKeyPress={this.handleKeyPress}
-          onChange={e => this.updateInput(e.target.value)}
+          onChange={e => this.onInputChange(e.target.value)}
         />
+        <br />
+        <br />
+        <small>{Math.round(this.state.wpm * 100) / 100} WPM (Average Instantaneous)</small>
       </div>
 
     );
