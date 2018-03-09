@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 
 // components
 import { Button, Card, Modal } from 'semantic-ui-react';
-// import { CopyToClipboard } from 'react-copy-to-clipboard';
 import TeamCard from '../../components/TeamCard/TeamCard';
 
 // actions
