@@ -8,7 +8,7 @@ import * as actions from './store/actions/index';
 // containers
 import Menu from './containers/MainMenu/MainMenu';
 import Lobby from './containers/Lobby/Lobby';
-// import Game from './containers/Game/Game';
+import Game from './containers/Game/Game';
 
 class App extends Component {
   state = {}
@@ -36,6 +36,7 @@ class App extends Component {
             path="/lobby/:id"
             component={Child}
           />
+          <Route exact path="/game/:id" component={Game} />
           <Redirect to="/" />
         </Switch>
       );
@@ -43,6 +44,7 @@ class App extends Component {
       view = (
         <Switch>
           <Route exact path="/lobby/:id" component={Lobby} />
+          <Route exact path="/game/:id" component={Game} />
           <Redirect to={`/lobby/${this.props.lid}`} />
         </Switch>
       );

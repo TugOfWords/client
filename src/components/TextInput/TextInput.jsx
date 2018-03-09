@@ -13,9 +13,12 @@ const TextInput = props => (
       type={props.type}
       label={props.label}
       disabled={props.disabled}
-      defaultValue={props.default}
+      //defaultValue={props.default}
+      value={props.value || props.default}
       placeholder={props.placeholder}
       onChange={e => props.onChange(e)}
+      onKeyPress={e => props.onKeyPress(e)}
+      style={props.style}
     />
 
     {/* display an error message below the input field if there is an error */}
