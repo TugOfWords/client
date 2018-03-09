@@ -21,4 +21,5 @@ export default {
   },
   leaveTeam: data => socket.emit('leaveTeam', data),
   isConnected: () => (!!socket),
+  socket,
 };

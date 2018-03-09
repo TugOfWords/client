@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Input } from 'semantic-ui-react';
 // import { Link } from 'react-router-dom';
-// import socket from '../../socket';
+import socket from '../../socket';
 
 class Game extends Component {
   state = {
@@ -11,6 +11,8 @@ class Game extends Component {
     wrong: false,
     wpm: 1,
     wpmt: Date.now(),
+    score1: 0,
+    score2: 0,
   }
 
   componentDidMount = () => {
@@ -19,6 +21,11 @@ class Game extends Component {
         wpm: (9 * this.state.wpm) / 10,
       });
     }, 200);
+
+    socket.on('scoreUpdate', (data) => {
+      this.updateScore1(data.t1);
+      this.updateScore2(data.t2);
+    });
   }
 
   onInputChange = (input) => {
@@ -67,6 +74,14 @@ class Game extends Component {
     this.setState({ input });
   }
 
+  updateScore1 = (score1) => {
+    this.setState({ score1 });
+  }
+
+  updateScore2 = (score2) => {
+    this.setState({ score2 });
+  }
+
   render() {
     console.log(this.state.input);
     return (
@@ -86,6 +101,10 @@ class Game extends Component {
         <br />
         <br />
         <small>{Math.round(this.state.wpm * 100) / 100} WPM (Average Instantaneous)</small>
+        <br />
+        <br />
+        <h3>Team 1 Score: {this.state.score1}</h3>
+        <h3>Team 2 Score: {this.state.score2}</h3>
       </div>
 
     );
