@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 // components
-import { Button, Card } from 'semantic-ui-react';
+import { Button, Card, Modal } from 'semantic-ui-react';
 import TeamCard from '../../components/TeamCard/TeamCard';
 
 // actions
@@ -75,6 +75,14 @@ class Lobby extends Component {
         <Button basic color="red" onClick={this.leaveLobby} style={{ marginTop: '30px' }}>
           Leave Lobby
         </Button>
+        <Modal
+          trigger={<Button>Share link!</Button>}
+          header="Share Link"
+          content={window.location.href}
+          actions={[
+          { key: 'done', content: 'Done', positive: true },
+        ]}
+        />
       </div>
     );
   }
