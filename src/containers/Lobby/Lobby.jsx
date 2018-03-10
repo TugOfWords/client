@@ -17,6 +17,7 @@ class Lobby extends Component {
   }
 
   componentDidMount() {
+    // will show teams any time component gets rendered i.e. on page refresh
     socket.getTeams({ lid: this.props.lid }, (res) => {
       const teams = this.getUsersOnTeams(res);
       this.setState({ t1: teams.t1, t2: teams.t2 });
@@ -36,7 +37,6 @@ class Lobby extends Component {
 
     // socket handler for when a user leaves the lobby
     socket.onLeaveLobby({ lid: this.props.lid }, (res) => {
-      console.log('User left lobby');
       const teams = this.getUsersOnTeams(res);
       this.setState({ t1: teams.t1, t2: teams.t2 });
     });
@@ -61,8 +61,8 @@ class Lobby extends Component {
 
   render() {
     let startButton = null;
+    const disabled = this.state.t1.length < 1 || this.state.t2.length < 1;
     if (this.props.isPrivate) {
-      const disabled = this.state.t1.length < 1 || this.state.t2.length < 1;
       startButton = (
         <Button basic content="Start Game" color="green" disabled={disabled} style={{ marginTop: '30px' }} />
       );
