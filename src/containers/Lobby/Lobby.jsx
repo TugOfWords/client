@@ -17,6 +17,11 @@ class Lobby extends Component {
   }
 
   componentDidMount() {
+    socket.getTeams({ lid: this.props.lid }, (res) => {
+      const teams = this.getUsersOnTeams(res);
+      this.setState({ t1: teams.t1, t2: teams.t2 });
+    });
+
     // socket handler for when a user joins a lobby
     socket.onJoinLobby({ lid: this.props.lid }, (res) => {
       const teams = this.getUsersOnTeams(res);
