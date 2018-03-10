@@ -72,7 +72,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   onCreateUserAuto: () => dispatch(actions.createUserAuto()),
   onJoinLobbyAuto: uid => dispatch(actions.joinLobbyAuto(uid)),
-  onJoinLobbyOnly: lid => dispatch(actions.joinLobbyOnly(lid)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

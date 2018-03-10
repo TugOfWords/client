@@ -6,7 +6,6 @@ export {
 export {
   createLobby,
   joinLobbyAuto,
-  joinLobbyOnly,
   joinTeam,
   leaveLobby,
   joinPublicLobby,

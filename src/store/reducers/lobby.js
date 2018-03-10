@@ -50,17 +50,36 @@ const createLobbySuccess = (state) => {
   return updateObject(state, updatedState);
 };
 
+/**
+ * Update the state to reflect the JOIN_LOBBY_SUCCESS action
+ * @param {Object} state
+ *   the current state of the lobby reducer
+ * @param {Object} action
+ *   the current action object
+ * @returns {Object}
+ *   the updated state
+ */
 const joinLobbySuccess = (state, action) => {
   const updatedState = {
     ...state,
     lid: action.lid,
     loading: false,
     error: null,
-    private: action.private || false,
+    private: action.private || true,
+    teamNumber: 0,
   };
   return updateObject(state, updatedState);
 };
 
+/**
+ * Update the state to reflect the JOIN_TEAM_SUCCESS action
+ * @param {Object} state
+ *   the current state of the lobby reducer
+ * @param {Object} action
+ *   the current action object
+ * @returns {Object}
+ *   the updated state
+ */
 const joinTeamSuccess = (state, action) => {
   const updatedState = {
     ...state,

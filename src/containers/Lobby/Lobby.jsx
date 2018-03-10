@@ -17,15 +17,22 @@ class Lobby extends Component {
   }
 
   componentDidMount() {
+    // socket handler for when a user joins a lobby
     socket.onJoinLobby({ lid: this.props.lid }, (res) => {
       const teams = this.getUsersOnTeams(res);
       this.setState({ t1: teams.t1, t2: teams.t2 });
     });
 
+    // socket handler for when a user joins a team
     socket.onJoinTeam({ lid: this.props.lid }, (res) => {
-      console.log('joined team...');
       const teams = this.getUsersOnTeams(res);
-      console.log(teams);
+      this.setState({ t1: teams.t1, t2: teams.t2 });
+    });
+
+    // socket handler for when a user leaves the lobby
+    socket.onLeaveLobby({ lid: this.props.lid }, (res) => {
+      console.log('User left lobby');
+      const teams = this.getUsersOnTeams(res);
       this.setState({ t1: teams.t1, t2: teams.t2 });
     });
   }
@@ -39,7 +46,7 @@ class Lobby extends Component {
   }
 
   leaveLobby = () => {
-    this.props.onLeaveLobby();
+    this.props.onLeaveLobby(this.props.lid, this.props.uid);
     window.location.href = '/';
   }
 
@@ -48,6 +55,14 @@ class Lobby extends Component {
   }
 
   render() {
+    let startButton = null;
+    if (this.props.private) {
+      const disabled = this.state.t1.length < 1 || this.state.t2.length < 1;
+      startButton = (
+        <Button basic content="Start Game" color="green" disabled={disabled} style={{ marginTop: '30px' }} />
+      );
+    }
+
     return (
       <div align="center" style={{ marginTop: '25px' }}>
         <h1>Pregame Lobby</h1>
@@ -71,7 +86,13 @@ class Lobby extends Component {
             disabled={this.props.teamNumber === 2}
           />
         </Card.Group>
-        <Button basic color="red" onClick={this.leaveLobby} style={{ marginTop: '30px' }}>
+
+        {/* Add start game button if the lobby is private */}
+        {startButton}
+        <br />
+
+        {/* Leave Lobby */}
+        <Button basic color="red" onClick={this.leaveLobby} style={{ marginTop: '10px' }}>
           Leave Lobby
         </Button>
       </div>
@@ -97,7 +118,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onJoinTeam: (lid, teamNumber, uid) => dispatch(actions.joinTeam(lid, teamNumber, uid)),
-  onLeaveLobby: () => dispatch(actions.leaveLobby()),
+  onLeaveLobby: (lid, uid) => dispatch(actions.leaveLobby(lid, uid)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Lobby);

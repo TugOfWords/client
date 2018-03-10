@@ -55,15 +55,6 @@ export const joinTeam = (lid, teamNumber, uid) => (dispatch) => {
   }
 };
 
-export const joinTeamAuto = () => (dispatch) => {
-  const lid = localStorage.getItem('lid');
-  const teamNumber = localStorage.getItem('teamNumber');
-  const uid = localStorage.getItem('uid');
-  if (lid !== null && teamNumber !== null && uid !== null) {
-    dispatch(joinTeam(lid, teamNumber, uid));
-  }
-};
-
 /**
  * Handle the CREATE_LOBBY_SUCCESS action
  * @param {String} lid
@@ -100,14 +91,27 @@ export const joinLobby = (lid, uid) => (dispatch) => {
     .then(() => {
       socket.joinLobby(data);
       localStorage.setItem('lid', lid);
+      localStorage.removeItem('teamNumber');
       dispatch(joinLobbySuccess(lid));
-      dispatch(joinTeamAuto());
     })
     .catch(e => dispatch(lobbyActionFailure(e)));
 };
 
-export const joinLobbyOnly = (lid) => {
-  localStorage.setItem('lid', lid);
+/**
+ * Add user to a publid lobby
+ * @param {String} uid
+ *   the unique userid of the user joining the lobby
+ */
+export const joinPublicLobby = uid => (dispatch) => {
+  dispatch(lobbyActionStart());
+  api.lobbys.getLobby()
+    .then((res) => {
+      socket.connect(res.lid);
+      socket.joinPublicLobby({ lid: res.lid, uid });
+      localStorage.setItem('lid', res.lid);
+      dispatch(joinLobbySuccess(res.lid, true));
+    })
+    .catch(e => dispatch(lobbyActionFailure(e)));
 };
 
 /**
@@ -159,18 +163,3 @@ export const createLobby = uid => (dispatch) => {
     .catch(e => dispatch(lobbyActionFailure(e)));
 };
 
-/**
- * Handle joining a public lobby
- */
-export const joinPublicLobby = uid => (dispatch) => {
-  dispatch(lobbyActionStart());
-  api.lobbys.getLobby()
-    .then((res) => {
-      console.log(res);
-      socket.connect(res.lid);
-      socket.joinPublicLobby({ lid: res.lid, uid });
-      localStorage.setItem('lid', res.lid);
-      dispatch(joinLobbySuccess(res.lid, true));
-    })
-    .catch(e => dispatch(lobbyActionFailure(e)));
-};

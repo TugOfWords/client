@@ -16,6 +16,9 @@ export default {
   },
   joinPublicLobby: data => socket.emit('joinPublicLobby', data),
   leaveLobby: data => socket.emit('leaveLobby', data),
+  onLeaveLobby: (data, cb) => {
+    socket.on(`user left lobby ${data.lid}`, res => cb(res));
+  },
   joinTeam: data => socket.emit('joinTeam', data),
   onJoinTeam: (data, cb) => {
     socket.on(`user joined team ${data.lid}`, res => cb(res));
