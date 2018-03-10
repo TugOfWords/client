@@ -26,6 +26,7 @@ class App extends Component {
     if (this.props.uid === '' || this.props.lid === '') { // main menu
       const Child = ({ match }) => {
         localStorage.setItem('lid', match.params.id);
+        localStorage.setItem('isPrivate', true);
         return <Redirect to="/" />;
       };
       view = (
@@ -72,7 +73,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   onCreateUserAuto: () => dispatch(actions.createUserAuto()),
   onJoinLobbyAuto: uid => dispatch(actions.joinLobbyAuto(uid)),
-  onJoinLobbyOnly: lid => dispatch(actions.joinLobbyOnly(lid)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

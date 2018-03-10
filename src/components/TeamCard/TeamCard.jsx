@@ -24,7 +24,7 @@ const TeamCard = (props) => {
   const renderPlayerNames = players => players.map((player, i) => <h4 key={`key: ${i + 1}`} className="playerName"> {`${player}`} </h4>);
 
   const renderJoinButton = () => {
-    if (!props.private) return null;
+    if (!props.isPrivate) return null;
     return (
       <Button basic color="green" content="Join Team" onClick={teamNumber => props.joinTeam(teamNumber)} disabled={props.disabled} />
     );
@@ -44,7 +44,7 @@ const TeamCard = (props) => {
 };
 
 TeamCard.defaultProps = {
-  private: false,
+  isPrivate: false,
   disabled: false,
 };
 
@@ -52,7 +52,7 @@ TeamCard.defaultProps = {
 TeamCard.propTypes = {
   teamNumber: PropTypes.number.isRequired,
   players: PropTypes.arrayOf(PropTypes.string).isRequired,
-  private: PropTypes.bool,
+  isPrivate: PropTypes.bool,
   joinTeam: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
 };

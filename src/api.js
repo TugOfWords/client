@@ -17,6 +17,7 @@ const api = {
     createLobby: payload => instance.post('/lobbys/createLobby', payload).then(res => res.data),
     joinLobby: payload => instance.post('/lobbys/joinLobby', payload).then(res => res.data),
     leaveLobby: payload => instance.post('/lobbys/leaveLobby', payload).then(res => res.data),
+    getLobby: payload => instance.get('/lobbys/publicLobby', payload).then(res => res.data),
   },
 };
 
