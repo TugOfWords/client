@@ -69,6 +69,7 @@ export class MainMenu extends Component {
             trigger={this.renderButton}
             content={<h1> Are you sure you want to create a lobby? </h1>}
             confirm={this.createLobby}
+            cancel={() => { }}
           />
 
           <br />

@@ -28,4 +28,16 @@ export default {
     socket.on(`user joined team ${data.lid}`, res => cb(res));
   },
   leaveTeam: data => socket.emit('leaveTeam', data),
+  onStartCountdown: (data, cb) => {
+    socket.on(`start countdown ${data.lid}`, res => cb(res));
+  },
+  onCountdown: (data, cb) => {
+    socket.on(`countdown ${data.lid}`, res => cb(res));
+  },
+  onStopCountdown: (data, cb) => {
+    socket.on(`stop countdown ${data.lid}`, () => cb());
+  },
+  onFinishCountdown: (data, cb) => {
+    socket.on(`finish countdown ${data.lid}`, () => cb());
+  },
 };

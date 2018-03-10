@@ -14,31 +14,44 @@ class Lobby extends Component {
   state = {
     t1: [],
     t2: [],
+    seconds: 10,
   }
 
   componentDidMount() {
-    // will show teams any time component gets rendered i.e. on page refresh
     socket.getTeams({ lid: this.props.lid }, (res) => {
       const teams = this.getUsersOnTeams(res);
       this.setState({ t1: teams.t1, t2: teams.t2 });
     });
 
-    // socket handler for when a user joins a lobby
     socket.onJoinLobby({ lid: this.props.lid }, (res) => {
       const teams = this.getUsersOnTeams(res);
       this.setState({ t1: teams.t1, t2: teams.t2 });
     });
 
-    // socket handler for when a user joins a team
     socket.onJoinTeam({ lid: this.props.lid }, (res) => {
       const teams = this.getUsersOnTeams(res);
       this.setState({ t1: teams.t1, t2: teams.t2 });
     });
 
-    // socket handler for when a user leaves the lobby
     socket.onLeaveLobby({ lid: this.props.lid }, (res) => {
       const teams = this.getUsersOnTeams(res);
       this.setState({ t1: teams.t1, t2: teams.t2 });
+    });
+
+    socket.onStartCountdown({ lid: this.props.lid }, (res) => {
+      this.setState({ seconds: res.seconds });
+    });
+
+    socket.onCountdown({ lid: this.props.lid }, (res) => {
+      this.setState({ seconds: res.seconds });
+    });
+
+    socket.onStopCountdown({ lid: this.props.lid }, () => {
+      this.setState({ seconds: 120 });
+    });
+
+    socket.onFinishCountdown({ lid: this.props.lid }, () => {
+      this.startGame();
     });
   }
 
@@ -48,6 +61,21 @@ class Lobby extends Component {
     const t2 = Object.assign({}, ...Object.keys(res.t2).map((k, i) =>
       ({ [i]: res.t2[k].username })));
     return { t1: Object.values(t1), t2: Object.values(t2) };
+  }
+
+  getCountdownTime = () => {
+    if (this.state.seconds === 0) return 'Starting game...';
+    const divForMinutes = this.state.seconds % (60 * 60);
+    const minutes = Math.floor(divForMinutes / 60);
+    const divForSeconds = divForMinutes % 60;
+    const seconds = Math.ceil(divForSeconds);
+    const formattedSeconds = seconds < 10 ?
+      `0${seconds}` : `${seconds}`;
+    return `${minutes}:${formattedSeconds}`;
+  }
+
+  startGame = () => {
+    console.log('Starting game!!!');
   }
 
   leaveLobby = () => {
@@ -64,9 +92,16 @@ class Lobby extends Component {
     const disabled = this.state.t1.length < 1 || this.state.t2.length < 1;
     if (this.props.isPrivate) {
       startButton = (
-        <Button basic content="Start Game" color="green" disabled={disabled} style={{ marginTop: '30px' }} />
+        <Button
+          basic
+          color="green"
+          content="Start Game"
+          disabled={disabled}
+          onClick={this.startGame}
+          style={{ marginTop: '30px' }}
+        />
       );
-    }
+    } else if (!disabled) startButton = <h2> {this.getCountdownTime()} </h2>;
 
     return (
       <div align="center" style={{ marginTop: '25px' }}>
