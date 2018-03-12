@@ -4,9 +4,9 @@ const SERVER_URL = process.env.SERVER_URL || 'localhost:8000';
 let socket = null;
 
 export default {
-  connect: id => new Promise((resolve) => {
+  connect: (id, uid) => new Promise((resolve) => {
     if (socket === null) {
-      socket = socketioClient(SERVER_URL, { query: `id=${id}` });
+      socket = socketioClient(SERVER_URL, { query: `lid=${id}&uid=${uid || 'None'}` });
     }
     resolve(socket);
   }),
@@ -28,6 +28,9 @@ export default {
     socket.on(`user joined team ${data.lid}`, res => cb(res));
   },
   leaveTeam: data => socket.emit('leaveTeam', data),
+  startGame: () => socket.emit('startGame'),
+  newWord: () => socket.emit('newWord'),
+  submitWord: word => socket.emit('submitWord', { word }),
   isConnected: () => (!!socket),
   onStartCountdown: (data, cb) => {
     socket.on(`start countdown ${data.lid}`, res => cb(res));
@@ -40,6 +43,15 @@ export default {
   },
   onFinishCountdown: (data, cb) => {
     socket.on(`finish countdown ${data.lid}`, () => cb());
+  },
+  onStartGame: (cb) => {
+    socket.on('startGame', () => cb());
+  },
+  onScore: (cb) => {
+    socket.on('score', data => cb(data.t1, data.t2));
+  },
+  onSendWord: (cb) => {
+    socket.on('sendWord', data => cb(data.word));
   },
   socket,
 };

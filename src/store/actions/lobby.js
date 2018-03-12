@@ -78,7 +78,7 @@ export const joinLobbySuccess = (lid, isPrivate) => ({
 export const joinLobby = (lid, uid, isPrivate) => (dispatch) => {
   dispatch(lobbyActionStart());
   const data = { lid, uid, isPrivate };
-  socket.connect(lid)
+  socket.connect(lid, uid)
     .then(() => {
       socket.joinLobby(data);
       localStorage.setItem('lid', lid);
@@ -113,7 +113,7 @@ export const joinLobbyAuto = () => (dispatch) => {
   const teamNumber = localStorage.getItem('teamNumber');
 
   if (lid && uid && isPrivate !== null) {
-    socket.connect(lid);
+    socket.connect(lid, uid);
     dispatch(joinLobbySuccess(lid, isPrivate === 'true'));
     if (teamNumber === '1') dispatch(joinTeamSuccess(1));
     else if (teamNumber === '2') dispatch(joinTeamSuccess(2));

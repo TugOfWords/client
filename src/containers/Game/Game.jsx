@@ -13,6 +13,7 @@ class Game extends Component {
     wpmt: Date.now(),
     score1: 0,
     score2: 0,
+    idle: false,
   }
 
   componentDidMount = () => {
@@ -22,10 +23,14 @@ class Game extends Component {
       });
     }, 200);
 
-    socket.on('scoreUpdate', (data) => {
-      this.updateScore1(data.t1);
-      this.updateScore2(data.t2);
+    socket.onScore((score1, score2) => this.setState({ score1, score2 }));
+
+    socket.onSendWord((word) => {
+      this.setState({ idle: false });
+      this.updateWord(word);
     });
+
+    socket.newWord();
   }
 
   onInputChange = (input) => {
@@ -38,32 +43,23 @@ class Game extends Component {
     this.updateInput(input);
   }
 
-  getWord = () => {
-    const dict = ['rock', 'paper', 'scissor', 'jump', 'run', 'hello', 'goodbye'];
-    const word = dict[Math.floor(Math.random() * dict.length)];
-    this.updateWord(word);
-  }
-
   handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
-      console.log(this.state.input);
-
-      if (!this.checkWord()) {
-        this.updateInput('');
-        this.getWord();
-        this.forceUpdate();
-        this.setState({ wrong: false });
-      }
+    if (event.key === 'Enter' && !this.state.idle) {
+      this.checkWord();
+      socket.submitWord(this.state.input);
+      this.updateInput('');
+      this.updateWord('');
+      this.setState({ idle: true });
     }
   }
 
   checkWord = () => {
-    if (this.state.word === this.state.input) {
-      this.setState({ wrong: false });
-      return false;
+    if (this.state.word !== this.state.input) {
+      this.setState({ wrong: true });
+      setTimeout(() => {
+        this.setState({ wrong: false });
+      }, 100);
     }
-    this.setState({ wrong: true });
-    return true;
   }
 
   updateWord = (word) => {
