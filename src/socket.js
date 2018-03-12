@@ -50,6 +50,9 @@ export default {
   onScore: (cb) => {
     socket.on('score', data => cb(data.t1, data.t2));
   },
+  onUserScore: (cb) => {
+    socket.on('uscore', data => cb(data.score));
+  },
   onSendWord: (cb) => {
     socket.on('sendWord', data => cb(data.word));
   },

@@ -13,6 +13,7 @@ class Game extends Component {
     wpmt: Date.now(),
     score1: 0,
     score2: 0,
+    uscore: 0,
     idle: false,
   }
 
@@ -24,6 +25,7 @@ class Game extends Component {
     }, 200);
 
     socket.onScore((score1, score2) => this.setState({ score1, score2 }));
+    socket.onUserScore(uscore => this.setState({ uscore }));
 
     socket.onSendWord((word) => {
       this.setState({ idle: false });
@@ -101,8 +103,9 @@ class Game extends Component {
         <small>{Math.round(this.state.wpm * 100) / 100} WPM (Average Instantaneous)</small>
         <br />
         <br />
-        <h3>Team 1 Score: {this.state.score1}</h3>
-        <h3>Team 2 Score: {this.state.score2}</h3>
+        <h3>Your Score: {this.state.uscore}</h3>
+        <h4>Team 1 Score: {this.state.score1}</h4>
+        <h4>Team 2 Score: {this.state.score2}</h4>
       </div>
 
     );
