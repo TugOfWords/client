@@ -8,7 +8,7 @@ class Game extends Component {
   state = {
     input: '',
     word: 'hello',
-    wrong: false,
+    wcolor: 'black',
     wpm: 1,
     wpmt: Date.now(),
     score1: 0,
@@ -27,6 +27,7 @@ class Game extends Component {
 
     socket.onSendWord((word) => {
       this.setState({ idle: false });
+      this.setState({ wcolor: 'black' });
       this.updateWord(word);
     });
 
@@ -45,20 +46,21 @@ class Game extends Component {
 
   handleKeyPress = (event) => {
     if (event.key === 'Enter' && !this.state.idle) {
-      this.checkWord();
-      socket.submitWord(this.state.input);
-      this.updateInput('');
-      this.updateWord('');
-      this.setState({ idle: true });
-    }
-  }
-
-  checkWord = () => {
-    if (this.state.word !== this.state.input) {
-      this.setState({ wrong: true });
-      setTimeout(() => {
-        this.setState({ wrong: false });
-      }, 100);
+      if (this.state.word !== this.state.input) {
+        this.setState({ wcolor: 'red' });
+        setTimeout(() => {
+          socket.submitWord(this.state.input);
+          this.updateInput('');
+          this.setState({ idle: true });
+        }, 150);
+      } else {
+        this.setState({ wcolor: 'green' });
+        setTimeout(() => {
+          socket.submitWord(this.state.input);
+          this.updateInput('');
+          this.setState({ idle: true });
+        }, 150);
+      }
     }
   }
 
@@ -88,7 +90,7 @@ class Game extends Component {
         <br />
         <br />
         <br />
-        <h1 style={{ color: this.state.wrong ? 'red' : 'black' }}>{this.state.word}</h1>
+        <h1 style={{ color: this.state.wcolor }}>{this.state.word}</h1>
         <Input
           value={this.state.input}
           onKeyPress={this.handleKeyPress}
