@@ -131,10 +131,10 @@ export const leaveLobby = (lid, uid) => (dispatch) => {
   dispatch(lobbyActionStart());
   const data = { lid, uid };
   try {
-    socket.leaveLobby(data);
     localStorage.removeItem('lid');
     localStorage.removeItem('teamNumber');
     localStorage.removeItem('isPrivate');
+    socket.leaveLobby(data);
   } catch (e) {
     dispatch(lobbyActionFailure(e));
   }

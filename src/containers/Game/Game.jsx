@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { List, Grid, Input } from 'semantic-ui-react';
+import { Button, List, Grid, Input } from 'semantic-ui-react';
 // import { Link } from 'react-router-dom';
 import socket from '../../socket';
+import * as actions from '../../store/actions/index';
 
 class Game extends Component {
   state = {
@@ -40,8 +41,13 @@ class Game extends Component {
     });
 
     socket.onEnd((data) => {
+      console.log(this.props.lid);
+      console.log(this.props.lid);
+      this.props.leaveLobby(this.props.lid, this.props.uid);
+
       console.log(data);
       console.log(this.props.username);
+
       const t1l = [];
       const entries1 = Object.entries(data.t1);
       for (let i = 0; i < entries1.length; i += 1) {
@@ -175,7 +181,11 @@ class Game extends Component {
               </Grid.Column>
             </Grid.Row>
           </Grid>
-
+          <br />
+          <br />
+          <Button basic color="green" onClick={() => { window.location.href = '/'; }} style={{ marginTop: '10px' }}>
+            Play Again
+          </Button>
         </div>
       );
     }
@@ -208,11 +218,20 @@ class Game extends Component {
 }
 
 Game.propTypes = {
+  uid: PropTypes.string.isRequired,
+  lid: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
+  leaveLobby: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
+  uid: state.user.uid,
+  lid: state.lobby.lid,
   username: state.user.username,
 });
 
-export default connect(mapStateToProps, null)(Game);
+const mapDispatchToProps = dispatch => ({
+  leaveLobby: (lid, uid) => dispatch(actions.leaveLobby(lid, uid)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
