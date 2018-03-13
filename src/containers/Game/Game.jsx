@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Input } from 'semantic-ui-react';
+import { List, Grid, Input } from 'semantic-ui-react';
 // import { Link } from 'react-router-dom';
 import socket from '../../socket';
 
@@ -15,6 +16,11 @@ class Game extends Component {
     score2: 0,
     uscore: 0,
     idle: false,
+    end: false,
+    winner: 0,
+    team: 0,
+    leaderboard1: [],
+    leaderboard2: [],
   }
 
   componentDidMount = () => {
@@ -31,6 +37,48 @@ class Game extends Component {
       this.setState({ idle: false });
       this.setState({ wcolor: 'black' });
       this.updateWord(word);
+    });
+
+    socket.onEnd((data) => {
+      console.log(data);
+      console.log(this.props.username);
+      const t1l = [];
+      const entries1 = Object.entries(data.t1);
+      for (let i = 0; i < entries1.length; i += 1) {
+        t1l.push({
+          username: entries1[i][0],
+          score: entries1[i][1],
+        });
+      }
+
+      const t2l = [];
+
+      const entries2 = Object.entries(data.t2);
+      for (let i = 0; i < entries2.length; i += 1) {
+        t2l.push({
+          username: entries2[i][0],
+          score: entries2[i][1],
+        });
+      }
+
+      t1l.sort((a, b) => b.score - a.score);
+      t2l.sort((a, b) => b.score - a.score);
+
+      this.setState({
+        leaderboard1: t1l,
+        leaderboard2: t2l,
+      });
+
+      if (data.t1[this.props.username]) {
+        this.setState({ team: 1 });
+      }
+      if (data.t2[this.props.username]) {
+        this.setState({ team: 2 });
+      }
+      this.setState({
+        end: true,
+        winner: data.winner,
+      });
     });
 
     socket.newWord();
@@ -83,7 +131,54 @@ class Game extends Component {
   }
 
   render() {
-    console.log(this.state.input);
+    if (this.state.end) {
+      let message = '';
+      if (this.state.team === this.state.winner) {
+        message = `Congratulations! Team ${this.state.team} has won the game!`;
+      } else {
+        message = `Sorry! Better luck next time Team ${this.state.team}.`;
+      }
+
+      const l1 = this.state.leaderboard1.map(l => (
+        <List.Item>{`${l.username} - ${l.score}`}</List.Item>
+      ));
+      const l2 = this.state.leaderboard2.map(l => (
+        <List.Item>{`${l.username} - ${l.score}`}</List.Item>
+      ));
+      return (
+        <div align="center" style={{ marginTop: '15%' }} >
+          <h1>{message}</h1>
+          <h3>Your Score: {this.state.uscore}</h3>
+          <small>{Math.round(this.state.wpm * 100) / 100} WPM (Average Instantaneous)</small>
+          <br />
+          <br />
+          <br />
+          <br />
+          <Grid columns={2}>
+            <Grid.Row>
+              <Grid.Column>
+                <h3>Team 1 Score: {this.state.score1}</h3>
+              </Grid.Column>
+              <Grid.Column>
+                <h3>Team 2 Score: {this.state.score2}</h3>
+              </Grid.Column>
+            </Grid.Row>
+
+            <Grid.Row>
+              <Grid.Column>
+                <h5>Leaderboard</h5>
+                <List ordered>{l1}</List>
+              </Grid.Column>
+              <Grid.Column>
+                <h5>Leaderboard</h5>
+                <List ordered>{l2}</List>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+
+        </div>
+      );
+    }
     return (
       <div align="center" style={{ marginTop: '15%' }} >
         <br />
@@ -103,7 +198,7 @@ class Game extends Component {
         <small>{Math.round(this.state.wpm * 100) / 100} WPM (Average Instantaneous)</small>
         <br />
         <br />
-        <h3>Your Score: {this.state.uscore}</h3>
+        <h3>Pesonal Score: {this.state.uscore}</h3>
         <h4>Team 1 Score: {this.state.score1}</h4>
         <h4>Team 2 Score: {this.state.score2}</h4>
       </div>
@@ -112,4 +207,12 @@ class Game extends Component {
   }
 }
 
-export default connect(null, null)(Game);
+Game.propTypes = {
+  username: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = state => ({
+  username: state.user.username,
+});
+
+export default connect(mapStateToProps, null)(Game);

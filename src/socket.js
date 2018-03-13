@@ -56,5 +56,6 @@ export default {
   onSendWord: (cb) => {
     socket.on('sendWord', data => cb(data.word));
   },
+  onEnd: cb => socket.on('end', data => cb(data)),
   socket,
 };
