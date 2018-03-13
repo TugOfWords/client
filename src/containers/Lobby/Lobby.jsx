@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+
 
 // components
 import { Button, Card, Modal } from 'semantic-ui-react';
@@ -15,6 +17,7 @@ class Lobby extends Component {
     t1: [],
     t2: [],
     seconds: 10,
+    gameStart: false,
   }
 
   componentDidMount() {
@@ -53,6 +56,8 @@ class Lobby extends Component {
     socket.onFinishCountdown({ lid: this.props.lid }, () => {
       this.startGame();
     });
+
+    socket.onStartGame(() => this.startGame());
   }
 
   getUsersOnTeams = (res) => {
@@ -76,6 +81,7 @@ class Lobby extends Component {
 
   startGame = () => {
     console.log('Starting game!!!');
+    this.setState({ gameStart: true });
   }
 
   leaveLobby = () => {
@@ -97,54 +103,55 @@ class Lobby extends Component {
           color="green"
           content="Start Game"
           disabled={disabled}
-          onClick={this.startGame}
+          onClick={() => socket.startGame()}
           style={{ marginTop: '30px' }}
         />
       );
     } else if (!disabled) startButton = <h2> {this.getCountdownTime()} </h2>;
 
-    return (
-      <div align="center" style={{ marginTop: '25px' }}>
-        <h1>Pregame Lobby</h1>
+    return this.state.gameStart ?
+      (<Redirect to={`/game/${this.props.lid}`} />) : (
+        <div align="center" style={{ marginTop: '25px' }}>
+          <h1>Pregame Lobby</h1>
 
-        {/* Team 1 */}
-        <Card.Group itemsPerRow={2} style={{ marginLeft: '10%', marginRight: '10%', marginTop: '30px' }}>
-          <TeamCard
-            joinTeam={() => this.joinTeam(1)}
-            players={this.state.t1}
-            teamNumber={1}
-            isPrivate={this.props.isPrivate}
-            disabled={this.props.teamNumber === 1}
-          />
+          {/* Team 1 */}
+          <Card.Group itemsPerRow={2} style={{ marginLeft: '10%', marginRight: '10%', marginTop: '30px' }}>
+            <TeamCard
+              joinTeam={() => this.joinTeam(1)}
+              players={this.state.t1}
+              teamNumber={1}
+              isPrivate={this.props.isPrivate}
+              disabled={this.props.teamNumber === 1}
+            />
 
-          {/* Team 2 */}
-          <TeamCard
-            joinTeam={() => this.joinTeam(2)}
-            players={this.state.t2}
-            teamNumber={2}
-            isPrivate={this.props.isPrivate}
-            disabled={this.props.teamNumber === 2}
-          />
-        </Card.Group>
+            {/* Team 2 */}
+            <TeamCard
+              joinTeam={() => this.joinTeam(2)}
+              players={this.state.t2}
+              teamNumber={2}
+              isPrivate={this.props.isPrivate}
+              disabled={this.props.teamNumber === 2}
+            />
+          </Card.Group>
 
-        {/* Add start game button if the lobby is isPrivate */}
-        {startButton}
-        <br />
+          {/* Add start game button if the lobby is isPrivate */}
+          {startButton}
+          <br />
 
-        {/* Leave Lobby */}
-        <Button basic color="red" onClick={this.leaveLobby} style={{ marginTop: '10px' }}>
+          {/* Leave Lobby */}
+          <Button basic color="red" onClick={this.leaveLobby} style={{ marginTop: '10px' }}>
           Leave Lobby
-        </Button>
-        <Modal
-          trigger={<Button>Share link!</Button>}
-          header="Share Link"
-          content={window.location.href}
-          actions={[
+          </Button>
+          <Modal
+            trigger={<Button>Share link!</Button>}
+            header="Share Link"
+            content={window.location.href}
+            actions={[
           { key: 'done', content: 'Done', positive: true },
         ]}
-        />
-      </div>
-    );
+          />
+        </div>
+      );
   }
 }
 
